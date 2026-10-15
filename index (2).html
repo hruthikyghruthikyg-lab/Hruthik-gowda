@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREWORA | Artisan Coffee House</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#2b1810; --roast:#4a2c1a; --caramel:#c68642; --gold:#e3b26b;
+    --cream:#f7efe4; --milk:#fffaf3; --text:#3b2a20;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Poppins',sans-serif;background:var(--milk);color:var(--text);line-height:1.6}
+  h1,h2,h3{font-family:'Playfair Display',serif}
+  a{text-decoration:none;color:inherit}
+  .container{width:90%;max-width:1150px;margin:auto}
+
+  /* NAVBAR */
+  nav{position:fixed;top:0;width:100%;z-index:100;padding:18px 0;transition:.4s}
+  nav.scrolled{background:rgba(43,24,16,.95);padding:12px 0;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  .nav-wrap{display:flex;justify-content:space-between;align-items:center}
+  .logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);letter-spacing:4px}
+  .logo span{color:#fff}
+  .menu{display:flex;gap:32px;list-style:none}
+  .menu a{color:#fff;font-size:.95rem;position:relative}
+  .menu a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--gold);transition:.3s}
+  .menu a:hover::after{width:100%}
+  .burger{display:none;color:#fff;font-size:1.8rem;cursor:pointer}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;align-items:center;color:#fff;
+    background:linear-gradient(120deg,rgba(43,24,16,.92),rgba(43,24,16,.55)),
+    url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80') center/cover fixed,
+    linear-gradient(135deg,#2b1810,#6b3f22)}
+  .hero h4{color:var(--gold);letter-spacing:5px;font-weight:400;margin-bottom:15px;font-size:.9rem}
+  .hero h1{font-size:clamp(2.6rem,7vw,5rem);line-height:1.1;margin-bottom:20px}
+  .hero h1 em{color:var(--gold);font-style:normal}
+  .hero p{max-width:520px;margin-bottom:35px;color:#e9dccd;font-weight:300}
+  .btn{display:inline-block;padding:14px 38px;border-radius:50px;background:linear-gradient(45deg,var(--caramel),var(--gold));
+    color:var(--espresso);font-weight:600;transition:.3s;border:none;cursor:pointer;font-size:1rem}
+  .btn:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(227,178,107,.45)}
+  .btn.outline{background:transparent;border:2px solid var(--gold);color:var(--gold);margin-left:12px}
+
+  /* SECTIONS */
+  section{padding:95px 0}
+  .title{text-align:center;margin-bottom:55px}
+  .title small{color:var(--caramel);letter-spacing:4px;font-weight:500}
+  .title h2{font-size:2.6rem;color:var(--espresso)}
+  .title .line{width:70px;height:3px;background:var(--caramel);margin:12px auto 0;border-radius:3px}
+
+  /* ABOUT */
+  .about{background:var(--cream)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
+  .about img{width:100%;height:420px;object-fit:cover;border-radius:20px;box-shadow:0 20px 45px rgba(43,24,16,.3)}
+  .about h3{font-size:2rem;margin-bottom:15px;color:var(--roast)}
+  .stats{display:flex;gap:35px;margin-top:28px}
+  .stats b{font-size:2rem;color:var(--caramel);font-family:'Playfair Display',serif;display:block}
+
+  /* MENU */
+  .tabs{display:flex;justify-content:center;gap:12px;margin-bottom:40px;flex-wrap:wrap}
+  .tab{padding:9px 26px;border-radius:30px;border:2px solid var(--caramel);background:none;color:var(--roast);
+    cursor:pointer;font-family:inherit;font-weight:500;transition:.3s}
+  .tab.active,.tab:hover{background:var(--caramel);color:#fff}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
+  .card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 8px 30px rgba(74,44,26,.12);transition:.4s}
+  .card:hover{transform:translateY(-10px);box-shadow:0 18px 40px rgba(74,44,26,.25)}
+  .card .img{height:210px;overflow:hidden;background:linear-gradient(135deg,var(--roast),var(--caramel));
+    display:flex;align-items:center;justify-content:center;font-size:4rem}
+  .card img{width:100%;height:100%;object-fit:cover;transition:.6s}
+  .card:hover img{transform:scale(1.12)}
+  .card .info{padding:22px}
+  .card h3{font-size:1.35rem;color:var(--espresso)}
+  .card p{font-size:.88rem;color:#7a6657;margin:6px 0 15px}
+  .price-row{display:flex;justify-content:space-between;align-items:center}
+  .price{font-size:1.4rem;font-weight:600;color:var(--caramel)}
+  .add{background:var(--espresso);color:var(--gold);border:none;width:42px;height:42px;border-radius:50%;
+    font-size:1.4rem;cursor:pointer;transition:.3s}
+  .add:hover{background:var(--caramel);color:#fff;transform:rotate(90deg)}
+
+  /* WHY */
+  .why{background:linear-gradient(135deg,var(--espresso),var(--roast));color:#fff}
+  .why .title h2{color:#fff}
+  .feat{text-align:center;padding:35px 25px;border-radius:20px;background:rgba(255,255,255,.07);
+    border:1px solid rgba(227,178,107,.25);transition:.3s}
+  .feat:hover{background:rgba(227,178,107,.15);transform:translateY(-6px)}
+  .feat .ico{font-size:2.6rem;margin-bottom:12px}
+  .feat h3{color:var(--gold);margin-bottom:8px}
+  .feat p{font-weight:300;font-size:.92rem;color:#e9dccd}
+
+  /* REVIEWS */
+  .review-box{max-width:700px;margin:auto;text-align:center;background:#fff;padding:45px;border-radius:25px;
+    box-shadow:0 10px 35px rgba(74,44,26,.15)}
+  .review-box .stars{color:var(--gold);font-size:1.4rem;letter-spacing:4px}
+  .review-box p{font-size:1.1rem;font-style:italic;margin:18px 0}
+  .review-box h4{color:var(--caramel)}
+
+  /* CONTACT */
+  .contact{background:var(--cream)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px}
+  .contact-info div{margin-bottom:22px}
+  .contact-info b{color:var(--caramel);display:block}
+  form{display:grid;gap:15px}
+  input,textarea{padding:14px 18px;border-radius:12px;border:2px solid #e5d6c3;font-family:inherit;font-size:.95rem;background:#fff;outline:none;transition:.3s}
+  input:focus,textarea:focus{border-color:var(--caramel)}
+
+  /* FOOTER */
+  footer{background:var(--espresso);color:#d9c8b4;padding:60px 0 20px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:35px;margin-bottom:40px}
+  footer h4{color:var(--gold);margin-bottom:15px;font-family:'Playfair Display',serif;font-size:1.15rem}
+  footer li{list-style:none;margin-bottom:8px;font-size:.92rem}
+  footer li a:hover{color:var(--gold)}
+  .social{display:flex;gap:12px;margin-top:15px}
+  .social span{width:38px;height:38px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;
+    justify-content:center;color:var(--gold);cursor:pointer;transition:.3s;font-size:.85rem;font-weight:600}
+  .social span:hover{background:var(--gold);color:var(--espresso)}
+  .copy{text-align:center;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:.85rem}
+
+  /* CART TOAST */
+  #cart{position:fixed;bottom:25px;right:25px;background:var(--espresso);color:var(--gold);padding:14px 24px;
+    border-radius:50px;box-shadow:0 8px 25px rgba(0,0,0,.35);z-index:200;font-weight:500;cursor:pointer;border:2px solid var(--gold)}
+  #toast{position:fixed;bottom:90px;right:25px;background:var(--caramel);color:#fff;padding:10px 20px;border-radius:10px;
+    opacity:0;transform:translateY(15px);transition:.4s;z-index:200}
+  #toast.show{opacity:1;transform:none}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:1s}
+  .reveal.show{opacity:1;transform:none}
+
+  @media(max-width:850px){
+    .menu{position:absolute;top:100%;left:0;width:100%;background:var(--espresso);flex-direction:column;align-items:center;
+      gap:20px;padding:25px 0;display:none}
+    .menu.open{display:flex}
+    .burger{display:block}
+    .about-grid,.contact-grid,.foot-grid{grid-template-columns:1fr}
+    .btn.outline{margin:12px 0 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <div class="container nav-wrap">
+    <a href="#home" class="logo">BREW<span>ORA</span></a>
+    <ul class="menu" id="menu">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu-sec">Menu</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="burger" onclick="document.getElementById('menu').classList.toggle('open')">☰</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="home">
+  <div class="container">
+    <h4>— ARTISAN COFFEE HOUSE —</h4>
+    <h1>Every Cup Tells a <em>Story</em> Worth Savoring</h1>
+    <p>Freshly roasted beans, handcrafted brews and a cozy corner made for you. Welcome to BREWORA, where coffee becomes an experience.</p>
+    <a href="#menu-sec" class="btn">Explore Menu</a>
+    <a href="#contact" class="btn outline">Visit Us</a>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section class="about reveal" id="about">
+  <div class="container about-grid">
+    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=80" alt="BREWORA cafe interior" onerror="this.style.background='linear-gradient(135deg,#4a2c1a,#c68642)';this.removeAttribute('src')">
+    <div>
+      <small style="color:var(--caramel);letter-spacing:4px">OUR STORY</small>
+      <h3>Crafted with Passion, Served with Love</h3>
+      <p>At BREWORA we source premium single-origin beans from the finest estates, roast them in small batches and brew every cup with care. From a bold espresso to a silky latte, each drink is made to lift your day.</p>
+      <div class="stats">
+        <div><b>12+</b>Coffee Types</div>
+        <div><b>5K+</b>Happy Guests</div>
+        <div><b>100%</b>Fresh Beans</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu-sec">
+  <div class="container">
+    <div class="title reveal"><small>OUR SPECIALS</small><h2>Coffee Menu &amp; Prices</h2><div class="line"></div></div>
+    <div class="tabs">
+      <button class="tab active" data-f="all">All</button>
+      <button class="tab" data-f="hot">Hot</button>
+      <button class="tab" data-f="cold">Cold</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="title reveal"><small style="color:var(--gold)">WHY BREWORA</small><h2>The Difference in Every Sip</h2><div class="line"></div></div>
+    <div class="grid">
+      <div class="feat reveal"><div class="ico">🌱</div><h3>Premium Beans</h3><p>Ethically sourced, freshly roasted every week.</p></div>
+      <div class="feat reveal"><div class="ico">☕</div><h3>Expert Baristas</h3><p>Trained hands crafting perfect latte art.</p></div>
+      <div class="feat reveal"><div class="ico">🛋️</div><h3>Cozy Ambience</h3><p>A warm space to work, read or catch up.</p></div>
+      <div class="feat reveal"><div class="ico">🚀</div><h3>Fast Delivery</h3><p>Hot coffee at your door in minutes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section>
+  <div class="container">
+    <div class="title reveal"><small>TESTIMONIALS</small><h2>What Our Guests Say</h2><div class="line"></div></div>
+    <div class="review-box reveal">
+      <div class="stars">★★★★★</div>
+      <p id="rtext"></p>
+      <h4 id="rname"></h4>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="title reveal"><small>GET IN TOUCH</small><h2>Visit or Reserve a Table</h2><div class="line"></div></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div><b>📍 Address</b>12, Brew Street, Indiranagar, Bengaluru</div>
+        <div><b>⏰ Opening Hours</b>Mon – Sun: 8:00 AM – 11:00 PM</div>
+        <div><b>📞 Phone</b>+91 98765 43210</div>
+        <div><b>✉️ Email</b>hello@brewora.com</div>
+      </div>
+      <form onsubmit="event.preventDefault();toast('Thanks! We will contact you soon ☕');this.reset()">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="4" placeholder="Your Message" required></textarea>
+        <button class="btn" type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a href="#home" class="logo">BREW<span>ORA</span></a>
+        <p style="margin-top:12px;font-weight:300">Handcrafted coffee, warm moments and a place that feels like home.</p>
+        <div class="social"><span>f</span><span>in</span><span>X</span><span>yt</span></div>
+      </div>
+      <div><h4>Quick Links</h4><ul>
+        <li><a href="#home">Home</a></li><li><a href="#about">About</a></li>
+        <li><a href="#menu-sec">Menu</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h4>Menu</h4><ul><li>Espresso</li><li>Cappuccino</li><li>Latte</li><li>Cold Brew</li></ul></div>
+      <div><h4>Newsletter</h4>
+        <form onsubmit="event.preventDefault();toast('Subscribed! 🎉');this.reset()">
+          <input type="email" placeholder="Your email" required>
+          <button class="btn" style="padding:10px">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="copy">© <span id="yr"></span> BREWORA Coffee House. All rights reserved.</div>
+  </div>
+</footer>
+
+<div id="cart">🛒 Cart: <span id="count">0</span> items · ₹<span id="total">0</span></div>
+<div id="toast"></div>
+
+<script>
+  // Coffee data (prices in INR)
+  const coffees = [
+    {n:"Espresso",   p:150, t:"hot",  e:"☕", d:"Rich, bold single shot with golden crema.",         i:"photo-1510707577719-ae7c14805e3a"},
+    {n:"Cappuccino", p:210, t:"hot",  e:"☕", d:"Espresso, steamed milk and velvety foam.",          i:"photo-1572442388796-11668a67e53d"},
+    {n:"Latte",      p:230, t:"hot",  e:"🥛", d:"Smooth espresso with creamy milk and latte art.",   i:"photo-1461023058943-07fcbe16d735"},
+    {n:"Americano",  p:180, t:"hot",  e:"☕", d:"Espresso diluted with hot water for a clean taste.", i:"photo-1551030173-122aabc4489c"},
+    {n:"Mocha",      p:260, t:"hot",  e:"🍫", d:"Espresso meets dark chocolate and steamed milk.",   i:"photo-1578314675249-a6910f80cc4e"},
+    {n:"Cold Brew",  p:240, t:"cold", e:"🧊", d:"Steeped 18 hours for a smooth, low-acid finish.",   i:"photo-1517701604599-bb29b565090c"}
+  ];
+
+  const grid = document.getElementById('grid');
+  let count = 0, total = 0;
+
+  function render(filter){
+    grid.innerHTML = '';
+    coffees.filter(c => filter === 'all' || c.t === filter).forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'card reveal show';
+      el.innerHTML = `
+        <div class="img"><img src="https://images.unsplash.com/${c.i}?auto=format&fit=crop&w=600&q=80" alt="${c.n}" loading="lazy"
+          onerror="this.parentNode.innerHTML='${c.e}'"></div>
+        <div class="info">
+          <h3>${c.n}</h3><p>${c.d}</p>
+          <div class="price-row"><span class="price">₹${c.p}</span>
+          <button class="add" title="Add to cart">+</button></div>
+        </div>`;
+      el.querySelector('.add').onclick = () => {
+        count++; total += c.p;
+        document.getElementById('count').textContent = count;
+        document.getElementById('total').textContent = total;
+        toast(c.n + ' added to cart');
+      };
+      grid.appendChild(el);
+    });
+  }
+  render('all');
+
+  document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active'); render(t.dataset.f);
+  });
+
+  // Toast
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // Navbar scroll + close mobile menu
+  addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+  document.querySelectorAll('.menu a').forEach(a => a.onclick = () => document.getElementById('menu').classList.remove('open'));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); }), {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Rotating reviews
+  const reviews = [
+    ["The best cappuccino in town! Cozy place and lovely staff.", "— Ananya R."],
+    ["Their cold brew is unbelievably smooth. My daily stop!", "— Karthik S."],
+    ["Perfect spot to work. Great mocha and even better vibes.", "— Meera P."]
+  ];
+  let ri = 0;
+  function showReview(){
+    document.getElementById('rtext').textContent = '"' + reviews[ri][0] + '"';
+    document.getElementById('rname').textContent = reviews[ri][1];
+    ri = (ri + 1) % reviews.length;
+  }
+  showReview(); setInterval(showReview, 4000);
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
